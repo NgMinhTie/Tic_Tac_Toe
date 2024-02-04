@@ -1,65 +1,46 @@
-#include<string>
-#include<iostream>
-#include<fstream>
+#include <string>
+#include <iostream>
+#include <fstream>
 
 using namespace std;
-
-class User{
-    protected:
-        string name;
-        bool win;
-        static User *computer;
-
-    public:
-        User();
-        virtual string getName(string &name)  = 0;
-        virtual bool win_not()  = 0;
-};
-
-class Human : public User{
-    private:
-        string name;
-        bool win;
-        static User *human;
-
-        Human(){}
-        Human(const Human &) = delete;
-        Human &operator=(const Human &) = delete;
-    public:
-        Human();
-        string getName(string &name)  override;
-        bool win_not()  override;
-        User *get_Instance();
-};
-
-class Computer : public User{
-private:
+class Implement;
+class Interface;
+class User
+{
+protected:
     string name;
-    bool win;
-    static User *computer;
-
-    //*Limit of construct and copy
-    Computer() {}
-    Computer(const Computer &) = delete;
-    Computer &operator=(const Computer &) = delete;
+    // bool win;
+    ////static User *computer;
 
 public:
-    //Computer();
-    string getName(string &name) override;
-    bool win_not()  override;
-    static User *get_Instance();
+    User();
+    void setName(string const &name);
+    string getName();
 };
 
-class Implement{
-    private:
-        Human *human;
-        Computer *computer;
+class Implement
+{
+private:
+    User *human;
+    User *computer;
 
-    public:
-        User *getHuman();
-        User *getComputer();
-        void run();
+public:
+    Implement();
+
+public:
+    User *getHuman();
+    User *getComputer();
+    void setUp_Table();
+    void print_Table();
+    void run(int const &num); // To know whether play H or C
 };
 
-class Interface{
+class Interface
+{
+private:
+    Implement *guest;
+
+public:
+    Interface(Implement *guest);
+    void instruction();
 };

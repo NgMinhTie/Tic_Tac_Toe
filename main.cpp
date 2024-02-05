@@ -74,6 +74,93 @@ void Implement::setUp_Table()
     }
     return;
 }
+void Implement::takeTurn(int const& num){
+    while (!User1_Win && !User2_Win)
+    {
+        //* PLAY USER 1
+        cout << "Enter the number 1-9" << endl;
+        int count;
+        cin >> count;
+        int i = 0, j = 0;
+        bool flag = false;
+        for (; i < 3; i++)
+        {
+            j = 0;
+            for (; j < 3; j++)
+            {
+                if (1 + i * 3 + j - count == 0)
+                    {
+                        flag = true;
+                        break;
+                    }
+            }
+            if (flag)
+                break;
+        }
+        cout << i << j << endl;
+        Table[i][j] = 'O';
+        ////cout << "DEBUG" << endl;
+        this->print_Table();
+        cout << "\n";
+        //*PLAY USER 2
+        if (num == 1)
+        {
+            cout << "Enter the number 1-9" << endl;
+            cin >> count;
+            i = 0;
+            j = 0;
+            flag = false;
+            for (; i < 3; i++)
+            {
+
+                j = 0;
+                for (; j < 3; j++)
+                {
+                    if (1 + i * 3 + j - count == 0)
+                    {
+                        flag = true;
+                        break;
+                    }
+                }
+                if (flag)
+                    break;
+            }
+            cout << i << j << endl;
+            Table[i][j] = 'X';
+        }
+        else if (num == 2)
+        {
+            std::srand(static_cast<unsigned>(std::time(0)));
+            while(true){
+                int randomNumber = rand() % 9 + 1;
+                i = 0;
+                j = 0;
+                flag = false;
+                for (; i < 3; i++)
+                {
+                    j = 0;
+                    for (; j < 3; j++)
+                    {
+                        if (1 + i * 3 + j - randomNumber == 0)
+                        {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (flag)
+                        break;
+                }
+                if(Table[i][j] == 'O')
+                    continue;
+                else{
+                    Table[i][j] = 'X';
+                    break;
+                }
+            }
+        }
+        this->print_Table();
+    }
+}
 void Implement::run(int const &num)
 {
     if (info == false)
@@ -92,19 +179,7 @@ void Implement::run(int const &num)
         info = true;
     }
     this->print_Table();
-    while (User1_Win || User2_Win)
-    {
-        //* PLAY USER 1
-
-        //*PLAY USER 2
-        if (num == 1)
-        {
-        }
-        else if (num == 2)
-        {
-        }
-        return;
-    }
+    this->takeTurn(num);
 }
 /**
  * !INTERFACE CLASS
@@ -114,7 +189,7 @@ void Interface::instruction()
 {
     cout << "----------------TIC_TAC_TOE--------------" << endl
          << "The User 1 will play first, and the another one will take turn afterwards." << endl
-         << "If you choose to play with human. Press 1.\nIf you choose to play with computer. Press 2.\n"
+         << "If you choose to play with human. Press 1.\nIf you choose to play with computer. Press 2."
          << endl;
     int num;
     cin >> num;

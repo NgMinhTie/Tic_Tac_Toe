@@ -3,6 +3,8 @@ static bool User1_Win = false;
 static bool User2_Win = false;
 static char **Table;
 static bool info = false;
+static int const ROW = 3;
+static int const COLUMN = 3;
 /**
  * !USER CLASS
  */
@@ -97,10 +99,16 @@ void Implement::takeTurn(int const& num){
             if (flag)
                 break;
         }
-        cout << i << j << endl;
+        ////cout << i << j << endl;
         Table[i][j] = 'O';
-        ////cout << "DEBUG" << endl;
         this->print_Table();
+        User1_Win = this->checkWin(i, j, 'O');
+        if(User1_Win)
+            {
+                cout << human->getName() << " Win!!!!!!!";
+                return;
+            }
+        ////cout << "DEBUG" << endl;
         cout << "\n";
         //*PLAY USER 2
         if (num == 1)
@@ -125,8 +133,14 @@ void Implement::takeTurn(int const& num){
                 if (flag)
                     break;
             }
-            cout << i << j << endl;
+            ////cout << i << j << endl;
             Table[i][j] = 'X';
+            User2_Win = this->checkWin(i, j, 'X');
+            if (User2_Win)
+            {
+                cout << computer->getName() << " Win!!!!!!!";
+                return;
+            }
         }
         else if (num == 2)
         {
@@ -154,12 +168,150 @@ void Implement::takeTurn(int const& num){
                     continue;
                 else{
                     Table[i][j] = 'X';
+                    User2_Win = this->checkWin(i, j, 'X');
+                    if (User2_Win)
+                    {
+                        cout << computer->getName() << " Win!!!!!!!";
+                        return;
+                    }
                     break;
                 }
             }
         }
         this->print_Table();
     }
+}
+bool Implement::checkWin(int const &row, int const &column, char const &type){
+    ////bool result = false;
+    int count = 1;
+    int r = row, c = column;
+    //TODO: LEFT & RIGHT
+    //* LEFT
+    while ((c >= 0 && c < 3) || count < 3){
+        --c;
+        if(c < 0|| c >= COLUMN || r < 0 || r >= ROW)
+            break;
+        if(Table[r][c] == type)
+            count += 1;
+        else
+            break;
+    }
+    c = column;
+    while ((c >= 0 && c < 3) || count < 3)
+    {
+        ++c;
+        if (c < 0 || c >= COLUMN || r < 0 || r >= ROW)
+            break;
+        if (Table[r][c] == type)
+            count += 1;
+        else
+            break;
+    }
+    if(count >= 3)
+        return true;
+    else{
+        r = row;
+        c = column;
+        count = 1;
+    }
+    //TODO:  UP & DOWN
+    while ((r >= 0 && r < 3) || count < 3)
+    {
+        --r;
+        if (c < 0 || c >= COLUMN || r < 0 || r >= ROW)
+            break;
+        if (Table[r][c] == type)
+            count += 1;
+        else
+            break;
+    }
+    r = row;
+    while ((r >= 0 && r < 3) || count < 3)
+    {
+        ++r;
+        if (c < 0 || c >= COLUMN || r < 0 || r >= ROW)
+            break;
+        if (Table[r][c] == type)
+            count += 1;
+        else
+            break;
+    }
+    if (count >= 3)
+        return true;
+    else
+    {
+        r = row;
+        c = column;
+        count = 1;
+    }
+    
+    //TODO:  DIAGONAL
+    while (((r >= 0 && r < 3) && (c >= 0 && c < 3)) || count < 3)
+    {
+        --r;
+        --c;
+        if (c < 0 || c >= COLUMN || r < 0 || r >= ROW)
+            break;
+            if (Table[r][c] == type)
+                count += 1;
+            else
+                break;
+    }
+    r = row;
+    c = column;
+    while (((r >= 0 && r < 3) && (c >= 0 && c < 3)) || count < 3)
+    {
+        ++r;
+        ++c;
+        if (c < 0 || c >= COLUMN || r < 0 || r >= ROW)
+            break;
+        if (Table[r][c] == type)
+            count += 1;
+        else
+            break;
+    }
+    if (count >= 3)
+        return true;
+    else
+    {
+        r = row;
+        c = column;
+        count = 1;
+    }
+    //*************
+    while (((r >= 0 && r < 3) && (c >= 0 && c < 3)) || count < 3)
+    {
+        --r;
+        ++c;
+        if (c < 0 || c >= COLUMN || r < 0 || r >= ROW)
+            break;
+        if (Table[r][c] == type)
+            count += 1;
+        else
+            break;
+    }
+    r = row;
+    c = column;
+    while (((r >= 0 && r < 3) && (c >= 0 && c < 3)) || count < 3)
+    {
+        ++r;
+        --c;
+        if (c < 0 || c >= COLUMN || r < 0 || r >= ROW)
+            break;
+        if (Table[r][c] == type)
+            count += 1;
+        else
+            break;
+    }
+    if (count >= 3)
+        return true;
+    else
+    {
+        r = row;
+        c = column;
+        count = 1;
+    }
+    return false;
 }
 void Implement::run(int const &num)
 {
@@ -200,7 +352,8 @@ int main()
 {
     Implement *implement = new Implement();
     Interface *interface = new Interface(implement);
-
     interface->instruction();
+    delete implement;
+    delete interface;
     return 0;
 }

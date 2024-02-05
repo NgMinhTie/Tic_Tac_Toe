@@ -3,6 +3,7 @@
 #include <fstream>
 #include <random>
 #include <ctime>
+#include <algorithm>
 
 using namespace std;
 class Implement;
@@ -25,8 +26,6 @@ class Implement
 private:
     User *human;
     User *computer;
-    vector<int> humanNum;
-    vector<int> computerNum;
 
 public:
     Implement();
@@ -37,6 +36,7 @@ public:
     void setUp_Table();
     void print_Table();
     void takeTurn(int const &num);
+    bool checkWin(int const &row, int const &column, char const &type);
     void run(int const &num); // To know whether play H or C
 };
 
